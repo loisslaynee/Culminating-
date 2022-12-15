@@ -5,7 +5,7 @@ pygame.init()
 #Open Pygame window
 screen = pygame.display.set_mode((640, 480)) # add RESIZABLE or FULLSCREEN
 
-#Title
+#Title: Tic Tac Toe
 pygame.display.set_caption("tic tac toe")
 color=pygame.color.THECOLORS["black"]
 
