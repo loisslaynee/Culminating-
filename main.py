@@ -67,6 +67,7 @@ while True:
        if event.key == K_DOWN:
           if cpu_level>=1:
              cpu_level-=1
+            
     #mouse commands
     if event.type == MOUSEBUTTONDOWN:
        if win or lose or draw:
