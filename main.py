@@ -1,6 +1,8 @@
 import pygame,sys,random
 from pygame.locals import *
 from colored import fg
+from button import Button
+from tabulate import tabulate
 
 pygame.init()
 
@@ -121,8 +123,7 @@ def tictactoe():
                              selected=1
                              circle_list.append(case)
                              screen.blit(circle,case)
-  
-                             
+        
        if not selected and cpu_level==2:
          
              for line in win_line:
@@ -262,7 +263,6 @@ BG = pygame.image.load("Background2.png")
 
 def get_font(size): # Returns Press-Start-2P in the desired size
     return pygame.font.Font("font.ttf", size)
-
 
 def main_menu():
     while True:
