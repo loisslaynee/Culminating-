@@ -4,6 +4,10 @@ from colored import fg
 from button import Button
 from tabulate import tabulate
 
+color_1 = fg('red')
+color_2 = fg('blue')
+color_3 = fg('green')
+
 pygame.init()
 
 def tictactoe():
@@ -12,8 +16,9 @@ def tictactoe():
   
   #Title: Tic Tac Toe
   pygame.display.set_caption("tic tac toe")
-  color=pygame.color.THECOLORS["black"]
-  
+  color=pygame.color.THECOLORS["black"] #color of the background
+
+  #sets up the table for the
   tab= pygame.image.load("resources/morp_tab.png").convert()
   tab.set_colorkey((0,0,0))
   tab_pos =(170,90)
@@ -38,7 +43,7 @@ def tictactoe():
   r=0
   time=0
   turn="player"
-  font=pygame.font.SysFont('Arial', 30)       
+  font=pygame.font.SysFont('Britannic Bold', 30)       
   
   tab_case=[(170,90),(270,90),(370,90),
            (170,190),(270,190),(370,190),
@@ -234,16 +239,16 @@ def tictactoe():
     screen.fill(color)
     
     if win:
-       text=font.render(("you win"), True, (0,250,0));screen.blit(text,(270,400))
+       text=font.render(("YOU WIN!"), True, (0,250,0));screen.blit(text,(270,400))
     if lose:
-       text=font.render(("you lose"), True, (250,0,0));screen.blit(text,(270,400))
+       text=font.render(("YOU LOSE!"), True, (250,0,0));screen.blit(text,(270,400))
     if draw:
-       text=font.render(("draw"), True, (0,0,250));screen.blit(text,(285,400))
+       text=font.render(("IT'S A TIE!"), True, (0,0,250));screen.blit(text,(285,400))
        
     text=font.render(("cpu level="+str(cpu_level)), True, (250,250,250));screen.blit(text,(480,0))
-    text=font.render(("cpu="+str(cpu)), True, (250,0,0));screen.blit(text,(180,0))
-    text=font.render(("player="+str(player)), True, (0,250,0));screen.blit(text,(0,0))
-    text=font.render(("draw="+str(draw2)), True, (0,0,250));screen.blit(text,(340,0))
+    text=font.render(("CPU="+str(cpu)), True, (250,0,0));screen.blit(text,(180,0))
+    text=font.render(("You="+str(player)), True, (0,250,0));screen.blit(text,(0,0))
+    text=font.render(("Draw="+str(draw2)), True, (0,0,250));screen.blit(text,(340,0))
   
     screen.blit(tab,tab_pos)
     for cross_pos in cross_list:
@@ -259,27 +264,61 @@ SCREEN = pygame.display.set_mode((400, 400))
 pygame.display.set_caption("Menu")
 font = "font.ttf"
 
-BG = pygame.image.load("Background2.png")
+BG = pygame.image.load("bg.png")
 
 def get_font(size): # Returns Press-Start-2P in the desired size
     return pygame.font.Font("font.ttf", size)
 
+# blits image to screen when user inputs something, e.g quit input = thank you message.
+def push_image(title,fileName):
+  #grab elements from the pygame interface
+  infoObject = pygame.display.Info()
+
+#create the display surface to grab the size of the pygame screen
+  display_surface = pygame.display.set_mode((infoObject.current_w, infoObject.current_h))
+  #create the window with the title given
+  pygame.display.set_caption(title) 
+
+  #convert the file to a png for pygame to use
+  image = pygame.image.load(fileName).convert()
+
+  #scale the image to the pygame window size
+  image = pygame.transform.scale(image, (infoObject.current_w, infoObject.current_h))
+
+  #push the image out to the pygame screen
+  display_surface.blit(image, (0, 0)) 
+
+  #refresh the screen with the new image
+  pygame.display.update()
+
+#function to show thank you image when the user clicks quit on the menu
+def ty_image():
+  push_image("ty","ty.png")
+  pygame.display.update()
+
+def instruction():
+  push_image("instruction","instruction.png")
+  pygame.display.update()
+
+#function to create the menu
 def main_menu():
     while True:
         SCREEN.blit(BG, (0, 0)) # blits a black screen 
 
-        MENU_MOUSE_POS = pygame.mouse.get_pos() #Returns the x and y position of the mouse cursor. ... The position is relative to the top-left corner of the display. ... but is always constrained to the screen.
+        MENU_MOUSE_POS = pygame.mouse.get_pos() #Returns the x and y position of the mouse cursor. The position is relative to the top-left corner of the display but is always constrained to the screen.
 
         menutext = get_font(28).render("TIC TAC TOE", True, "#C5E384")
-        MENU_RECT = menutext.get_rect(center=(200, 100))
+        MENU_RECT = menutext.get_rect(center=(200, 25))
 
-        playbutton = Button(image=pygame.image.load("Rect.png"), pos=(200, 200), text_input="PLAY", font=get_font(23), base_color="#d7fcd4", hovering_color="Green") # creating buttons
+        playbutton = Button(image=pygame.image.load("Rect.png"), pos=(200, 115), text_input="PLAY", font=get_font(23), base_color="#d7fcd4", hovering_color="Green") # creating buttons
+
+        insbutton = Button(image=pygame.image.load("Rect.png"), pos=(200, 215), text_input="INSTRUCTIONS", font=get_font(23), base_color="#d7fcd4", hovering_color="Cyan")
         
-        quitbutton = Button(image=pygame.image.load("Rect.png"), pos=(200, 330), text_input="QUIT", font=get_font(23), base_color="#d7fcd4", hovering_color="Red")
+        quitbutton = Button(image=pygame.image.load("Rect.png"), pos=(200, 315), text_input="QUIT", font=get_font(23), base_color="#d7fcd4", hovering_color="Red")
 
         SCREEN.blit(menutext, MENU_RECT)
 
-        for button in [playbutton, quitbutton]:
+        for button in [playbutton, insbutton, quitbutton]:
             button.changeColor(MENU_MOUSE_POS) # if mouse hovers over options changes colors 
             button.update(SCREEN)
         
@@ -289,22 +328,16 @@ def main_menu():
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN: #clicks play/begins game 
                 if playbutton.checkForInput(MENU_MOUSE_POS):
-                    tictactoe() # plays game
+                    tictactoe() # calls and plays game
+                if insbutton.checkForInput(MENU_MOUSE_POS):
+                    instruction()
+                    main_menu()
 
                 if quitbutton.checkForInput(MENU_MOUSE_POS):
-                    print("""
- ______ __ __  ____ ____  __  _      __ __  ___  __ __ 
-|      |  |  |/    |    \|  |/ ]    |  |  |/   \|  |  |
-|      |  |  |  o  |  _  |  ' /     |  |  |     |  |  |
-|_|  |_|  _  |     |  |  |    \     |  ~  |  O  |  |  |
-  |  | |  |  |  _  |  |  |     |    |___, |     |  :  |
-  |  | |  |  |  |  |  |  |  .  |    |     |     |     |
-  |__| |__|__|__|__|__|__|__|\_|    |____/ \___/ \__,_|
-                                                       
-""")
-                    pygame.quit() # exists
+                    ty_image() # show thank you image
+                    pygame.quit() # exit
                     sys.exit()
 
-        pygame.display.update() # continusley updates screen or resets screen when arguement is made
+        pygame.display.update() # continiously updates screen or resets screen when arguement is made
 
 main_menu()
