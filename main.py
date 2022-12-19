@@ -240,9 +240,9 @@ def tictactoe():
     
     if win:
        text=font.render(("YOU WIN!"), True, (0,250,0));screen.blit(text,(270,400))
-    if lose:
+    elif lose:
        text=font.render(("YOU LOSE!"), True, (250,0,0));screen.blit(text,(270,400))
-    if draw:
+    elif draw:
        text=font.render(("IT'S A TIE!"), True, (0,0,250));screen.blit(text,(285,400))
        
     text=font.render(("cpu level="+str(cpu_level)), True, (250,250,250));screen.blit(text,(480,0))
