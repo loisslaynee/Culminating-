@@ -331,10 +331,11 @@ def main_menu():
                     tictactoe() # calls and plays game
                 if insbutton.checkForInput(MENU_MOUSE_POS):
                     instruction()
-                    main_menu()
+                pygame.time.wait(25000)
 
                 if quitbutton.checkForInput(MENU_MOUSE_POS):
                     ty_image() # show thank you image
+                    pygame.time.wait(5000) # displays the image in a given time
                     pygame.quit() # exit
                     sys.exit()
 
